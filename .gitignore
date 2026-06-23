@@ -1,0 +1,47 @@
+# ====================== 全局通用 ======================
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.bak
+.idea/
+.vscode/
+*.swp
+*.swo
+.env.local
+.env.*.local
+
+# ====================== 后端 Java Maven (back/sy-server) ======================
+# Maven 编译产物
+back/sy-server/target/
+back/sy-server/.mvn/wrapper/maven-wrapper.jar
+# IDE 本地配置
+back/sy-server/.idea/
+back/sy-server/*.iml
+back/sy-server/*.log
+# 本地环境配置
+back/sy-server/src/main/resources/application-dev.yml
+back/sy-server/src/main/resources/application-local.yml
+
+# ====================== 前端 Vite Vue TS (frontend/sy-ui) ======================
+# 依赖包
+frontend/sy-ui/node_modules/
+# 打包产物
+frontend/sy-ui/dist/
+frontend/sy-ui/dist-ssr/
+# 本地环境变量
+frontend/sy-ui/.env
+frontend/sy-ui/.env.local
+frontend/sy-ui/.env.development.local
+frontend/sy-ui/.env.production.local
+# 日志、缓存
+frontend/sy-ui/npm-debug.log*
+frontend/sy-ui/yarn-debug.log*
+frontend/sy-ui/yarn-error.log*
+frontend/sy-ui/pnpm-debug.log*
+frontend/sy-ui/.vite/
+frontend/sy-ui/.turbo/
+frontend/sy-ui/.cache/
+# 编辑器临时文件
+frontend/sy-ui/.vs/
+frontend/sy-ui/*.tsbuildinfo
