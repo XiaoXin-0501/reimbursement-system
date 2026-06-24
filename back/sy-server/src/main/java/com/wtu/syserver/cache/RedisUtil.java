@@ -170,4 +170,33 @@ public class RedisUtil {
             throw new CacheException(MessageEnum.REDIS_DELETE_FAIL);
         }
     }
+
+    /**
+     * 原子自增 1
+     *
+     * @param key 键
+     * @return 自增后数值
+     */
+    public Long incr(String key) {
+        try {
+            return redisTemplate.opsForValue().increment(key);
+        } catch (Exception e) {
+            throw new CacheException(MessageEnum.REDIS_INCR_ERROR);
+        }
+    }
+
+    /**
+     * 指定步长原子自增
+     *
+     * @param key   键
+     * @param delta 自增步长（正数递增，负数递减）
+     * @return 操作后数值
+     */
+    public Long incrBy(String key, long delta) {
+        try {
+            return redisTemplate.opsForValue().increment(key, delta);
+        } catch (Exception e) {
+            throw new CacheException(MessageEnum.REDIS_INCR_ERROR);
+        }
+    }
 }

@@ -78,6 +78,7 @@ public class TripServiceImpl implements TripService {
     public int deleteTripByReimId(String reimId) {
         String key = RedisKeyEnum.TRIP_LIST.getKey(reimId);
         redisUtil.delete(key);
+        redisUtil.incr(RedisKeyEnum.REIM_PAGE_VERSION.getKey());
 
         LambdaQueryWrapper<Trip> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Trip::getReimId, reimId);

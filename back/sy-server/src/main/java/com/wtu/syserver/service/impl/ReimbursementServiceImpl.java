@@ -82,13 +82,13 @@ public class ReimbursementServiceImpl implements ReimbursementService {
             return 0;
         }
         List<SubsidyInfo> subsidyInfos = subsidInfoService.getSubsidyInfoListByReimId(reimId);
-        String[] subsidyInfokeys = subsidyInfos.stream()
+        String[] subsidyInfoKeys = subsidyInfos.stream()
                 .map(info -> RedisKeyEnum.EXPENSE_LIST.getKey(info.getId()))
                 .toArray(String[]::new);
         //删除缓存
-        redisUtil.deleteByPrefix(RedisKeyEnum.REIM_PAGE.getKey());
+        redisUtil.incr(RedisKeyEnum.REIM_PAGE_VERSION.getKey());
         redisUtil.delete(RedisKeyEnum.ALLOCATION_LIST.getKey(reimId));
-        redisUtil.delete(subsidyInfokeys);
+        redisUtil.delete(subsidyInfoKeys);
         redisUtil.delete(RedisKeyEnum.TRIP_LIST.getKey(reimId));
         redisUtil.delete(RedisKeyEnum.SUBSIDY_LIST.getKey(reimId));
 
@@ -102,9 +102,8 @@ public class ReimbursementServiceImpl implements ReimbursementService {
         CompletableFuture.runAsync(() -> {
             try {
                 Thread.sleep(RedisConstant.DELETE_DELAY_TIME);
-                redisUtil.deleteByPrefix(RedisKeyEnum.REIM_PAGE.getKey());
                 redisUtil.delete(RedisKeyEnum.ALLOCATION_LIST.getKey(reimId));
-                redisUtil.delete(subsidyInfokeys);
+                redisUtil.delete(subsidyInfoKeys);
                 redisUtil.delete(RedisKeyEnum.TRIP_LIST.getKey(reimId));
                 redisUtil.delete(RedisKeyEnum.SUBSIDY_LIST.getKey(reimId));
             } catch (InterruptedException ignored) {
@@ -176,6 +175,7 @@ public class ReimbursementServiceImpl implements ReimbursementService {
                 costAllocationDTO.setReimId(reimbursementId);
             });
             costAllocationService.insertCostAllocation(costAllocationDTOS);
+            redisUtil.incr(RedisKeyEnum.REIM_PAGE_VERSION.getKey());
 
             return reimbursementId;
         } catch (Exception e) {
@@ -185,30 +185,24 @@ public class ReimbursementServiceImpl implements ReimbursementService {
 
     @Override
     public int deleteReimbursementDetailByReimId(String reimId) {
-        String key = RedisKeyEnum.REIM_PAGE.getKey();
-        redisUtil.deleteByPrefix(key);
+        redisUtil.incr(RedisKeyEnum.REIM_PAGE_VERSION.getKey());
 
         LambdaQueryWrapper<Reimbursement> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Reimbursement::getId, reimId);
-        int rows = reimbursementMapper.delete(wrapper);
 
-        // 延迟二次删除（防止回填）
-        CompletableFuture.runAsync(() -> {
-            try {
-                Thread.sleep(RedisConstant.DELETE_DELAY_TIME);
-                redisUtil.deleteByPrefix(key);
-            } catch (InterruptedException ignored) {
-            }
-        });
         // 删除匹配条件的数据
-        return rows;
+        return reimbursementMapper.delete(wrapper);
     }
 
     @Override
     public Page<Reimbursement> getReimbursementPage(ReimbursementPageQueryDTO queryDTO) {
+        Long version = redisUtil.get(RedisKeyEnum.REIM_PAGE_VERSION.getKey(), Long.class);
+        if (version == null) {
+            version = redisUtil.incr(RedisKeyEnum.REIM_PAGE_VERSION.getKey());
+        }
         // 构建缓存Key（MD5）
         String cacheKey = CacheKeyUtils.pageKey(
-                RedisKeyEnum.REIM_PAGE.getKey(),
+                RedisKeyEnum.REIM_PAGE.getKey(version.toString()),
                 queryDTO
         );
 

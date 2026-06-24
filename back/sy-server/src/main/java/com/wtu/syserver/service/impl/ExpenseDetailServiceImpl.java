@@ -93,6 +93,7 @@ public class ExpenseDetailServiceImpl implements ExpenseDetailService {
 
     @Override
     public int deleteExpenseDetailByReimId(String reimId) {
+        redisUtil.incr(RedisKeyEnum.REIM_PAGE_VERSION.getKey());
         LambdaQueryWrapper<ExpenseDetail> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(ExpenseDetail::getReimId, reimId);
         return expenseDetailMapper.delete(wrapper);

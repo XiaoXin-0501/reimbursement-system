@@ -91,6 +91,7 @@ public class SubsidInfoServiceImpl implements SubsidInfoService {
     public int deleteSubsidInfoByReimId(String reimId) {
         String key = RedisKeyEnum.SUBSIDY_LIST.getKey(reimId);
         redisUtil.delete(key);
+        redisUtil.incr(RedisKeyEnum.REIM_PAGE_VERSION.getKey());
 
         LambdaQueryWrapper<SubsidyInfo> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(SubsidyInfo::getReimId, reimId);

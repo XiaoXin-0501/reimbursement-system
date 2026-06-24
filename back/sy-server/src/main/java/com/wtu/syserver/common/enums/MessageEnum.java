@@ -11,6 +11,7 @@ public enum MessageEnum {
     REDIS_GET_ERROR("redis get error"),
     REDIS_KEY_CREATE_FAIL("redis key create fail"),
     REDIS_DELETE_FAIL("redis delete fail"),
+    REDIS_INCR_ERROR("redis incr error"),
 
     REIMBURSE_DETAIL_INSERT_FAIL("报销单插入失败"),
     REIMBURSE_SUBMIT_REPEAT("报销单重复提交"),

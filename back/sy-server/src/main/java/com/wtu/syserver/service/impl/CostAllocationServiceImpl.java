@@ -56,6 +56,7 @@ public class CostAllocationServiceImpl implements CostAllocationService {
     public int deleteCostAllocationByReimId(String reimId) {
         String key = RedisKeyEnum.ALLOCATION_LIST.getKey(reimId);
         redisUtil.delete(key);
+        redisUtil.incr(RedisKeyEnum.REIM_PAGE_VERSION.getKey());
 
         LambdaQueryWrapper<CostAllocation> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(CostAllocation::getReimId, reimId);
