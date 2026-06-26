@@ -1,0 +1,114 @@
+/* Global Styles for Travel Reimbursement System */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+  background: #f0f2f5;
+  min-height: 100vh;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Element Plus Overrides */
+.el-table th.el-table__cell {
+  background-color: #f5f7fa;
+  color: #333;
+  font-weight: 600;
+}
+
+.el-collapse {
+  border: none;
+}
+
+.el-collapse-item__header {
+  border-bottom: 1px solid #ebeef5 !important;
+  font-size: 16px;
+}
+
+.el-collapse-item__wrap {
+  border-bottom: none !important;
+}
+
+/* Confirm dialog custom style */
+.confirm-delete-dialog .el-message-box__status {
+  color: #e6a23c !important;
+}
+
+/* Link text style for table */
+.link-text {
+  color: #409eff;
+  cursor: pointer;
+}
+.link-text:hover {
+  text-decoration: underline;
+}
+
+/* iconfont styles */
+.iconfont {
+  font-size: 16px;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s;
+}
+.iconfont:hover {
+  color: #409eff;
+}
+.iconfont.disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Status tag custom colors */
+.el-tag--info {
+  --el-tag-bg-color: #f4f4f5;
+  --el-tag-border-color: #e9e9eb;
+  --el-tag-text-color: #909399;
+}
+
+/* Primary button override: dark blue theme */
+.el-button--primary {
+  --el-button-bg-color: #1a3a5c;
+  --el-button-border-color: #1a3a5c;
+  --el-button-hover-bg-color: #254d78;
+  --el-button-hover-border-color: #254d78;
+  --el-button-active-bg-color: #132b45;
+  --el-button-active-border-color: #132b45;
+}
+
+/* Table text alignment */
+.el-table .cell {
+  padding: 6px 8px;
+}
+
+/* Tree select dropdown width */
+.el-tree-select {
+  width: 100%;
+}
+
+/* Alert warning style */
+.el-alert--warning.is-light {
+  background-color: #fdf6ec;
+  border: 1px solid #faecd8;
+}
